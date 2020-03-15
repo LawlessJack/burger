@@ -15,7 +15,8 @@
                 <div class="form-group">
                     <ul>
                         <li>
-                            <button type="submit" class="btn btn-warning">{{burger_name}}</button>
+                            <input type="hidden" name="devoured" value="true">
+                            <button type="submit" class="btn btn-warning">{{this.burger_name}}</button>
                         </li>
                     </ul>
                 </div>
@@ -24,7 +25,7 @@
             {{/each}}
         </div>
         <div class="col-lg-4 text-center">
-            <form action="/burgers/create" method="POST">
+            <form action="/" method="POST">
                 <div class="form-group">
                     <input type="text" name="burger_name" class="form-control text-center" maxlength="50"
                         placeholder="Enter Burger Name">
@@ -37,13 +38,16 @@
             <h2 class="header">Burgers Devoured</h2>
             {{#each burgers}}
             {{#if this.devoured}}
-            <div>
+            <form action="/{{this.id}}?_method=PUT" method="POST">
+                <div class="form-group">
                 <ul>
                     <li>
-                        <button disabled class="btn btn-danger">{{burger_name}}</button>
+                        <input type="hidden" name="devoured" value="false">
+                        <button disabled class="btn btn-danger">{{this.burger_name}}</button>
                     </li>
                 </ul>
             </div>
+            </form>
             {{/if}}
             {{/each}}
         </div>

@@ -1,5 +1,5 @@
 var express = require("express");
-
+var bodyParser = require('body-parser');
 var router = express.Router();
 
 // Import the model to use its database functions.
@@ -12,7 +12,7 @@ router.get("/", function(req, res) {
     var hbsObject = {
       burgers: data
     };
-    console.log(hbsObject);
+    //console.log(hbsObject);
     res.render("index", hbsObject);
   });
 });
@@ -20,9 +20,10 @@ router.get("/", function(req, res) {
 //POST
 //insertOne function
 router.post("/", function(req, res) {
+  console.log(req.body)
   burger.insertOne([
     "burger_name"], [
-    req.body.name], function() {
+    req.body.burger_name], function() {
     res.redirect("/");
   });
 });
@@ -32,11 +33,12 @@ router.post("/", function(req, res) {
 router.put("/:id", function(req, res) {
   var condition = "id = " + req.params.id;
 
-  //console.log("condition", condition);
-
-  burger.updateOne({
+ // console.log("condition", condition);
+console.log(req.body.devoured)
+  burger.updateOne(
+    {
     devoured: req.body.devoured
-  }, condition, function() {
+    }, condition, function() {
     res.redirect("/");
   });
 });
