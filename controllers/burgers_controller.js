@@ -32,9 +32,9 @@ router.post("/", function(req, res) {
 //updateOne function
 router.put("/:id", function(req, res) {
   var condition = "id = " + req.params.id;
-
- // console.log("condition", condition);
-console.log(req.body.devoured)
+  //console.log(condition)
+ //console.log("condition", condition);
+console.log("my log: " + req.body.devoured)
   burger.updateOne(
     {
     devoured: req.body.devoured

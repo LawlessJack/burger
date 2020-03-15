@@ -12,11 +12,12 @@
             {{#each burgers}}
             {{#unless this.devoured}}
             <form action="/{{this.id}}?_method=PUT" method="POST">
+            <input type="hidden" name="devoured" value="true">
                 <div class="form-group">
                     <ul>
                         <li>
-                            <input type="hidden" name="devoured" value="true">
-                            <button type="submit" class="btn btn-warning">{{this.burger_name}}</button>
+                            
+                            <button data-id="{{this.id}}"type="submit" id = "burgerbtn" class="btn btn-warning">{{this.burger_name}}</button>
                         </li>
                     </ul>
                 </div>
@@ -38,18 +39,64 @@
             <h2 class="header">Burgers Devoured</h2>
             {{#each burgers}}
             {{#if this.devoured}}
-            <form action="/{{this.id}}?_method=PUT" method="POST">
+        
+            <input type="hidden" name="devoured" value="false">
                 <div class="form-group">
                 <ul>
                     <li>
-                        <input type="hidden" name="devoured" value="false">
+                        
                         <button disabled class="btn btn-danger">{{this.burger_name}}</button>
                     </li>
                 </ul>
             </div>
-            </form>
+        
             {{/if}}
             {{/each}}
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+  $("#burgerbtn").on("click", function(event) {
+    var id = $(this).data("id");
+    //console.log(id)
+     var updateState = {
+      devoured: 1
+    };
+
+    // Send the DELETE request.
+    $.ajax("/" + id, {
+      type: "PUT",
+      data: updateState
+    }).then(
+      function() {
+       //console.log("changed state to ", updateState);
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+
+  $(".btn btn-primary").on("submit", function(event) {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+     var newBurger = {
+      burger_name: $("#ca").val().trim(),
+      devoured: $(".btn btn-primary [name=devoured]").val().trim()
+    };
+
+    // Send the POST request.
+    $.ajax("/", {
+      type: "POST",
+      data: newBurger
+    }).then(
+      function() {
+        console.log("added new burger");
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+
+</script>
